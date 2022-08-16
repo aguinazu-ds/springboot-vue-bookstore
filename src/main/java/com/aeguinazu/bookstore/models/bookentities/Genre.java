@@ -2,6 +2,7 @@ package com.aeguinazu.bookstore.models.bookentities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property="genre_uuid")
+@JsonIdentityInfo(generator = ObjectIdGenerators.None.class)
 public class Genre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +25,7 @@ public class Genre {
                     CascadeType.PERSIST,
                     CascadeType.MERGE
             })
+    @JsonBackReference
     private Set<Book> books = new HashSet<>();
 
     public Genre() {

@@ -9,16 +9,21 @@ import com.aeguinazu.bookstore.repositories.BookPublisherRepository;
 import com.aeguinazu.bookstore.repositories.BookRepository;
 import com.aeguinazu.bookstore.repositories.GenreRepository;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/v1")
 public class BookController {
@@ -31,7 +36,21 @@ public class BookController {
     @Autowired
     private GenreRepository genreRepository;
 
-    @GetMapping("/books")
+    @PostMapping(value = "/test")
+    public ResponseEntity<Book> testBook(@RequestBody List<JsonNode> body) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Book newBook = objectMapper.treeToValue(body.get(0), Book.class);
+            BookAuthor author = bookAuthorRepository.findByAuthorName(body.get(0).get("author").asText());
+            newBook.setAuthor(author);
+            bookRepository.save(newBook);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/book")
     public ResponseEntity<List<Book>> getAllBooks() {
         List<Book> books = bookRepository.findAll();
         if (books.isEmpty()) {
@@ -41,7 +60,7 @@ public class BookController {
     }
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    @PostMapping(value = "/books")
+    @PostMapping(value = "/book")
     public ResponseEntity<Book> createBook(@RequestBody JsonNode book) {
         try {
             Book newBook = new Book(book.get("title").asText(), book.get("description").asText(),
@@ -76,6 +95,19 @@ public class BookController {
             }
             Book _newBook = bookRepository.save(newBook);
             return new ResponseEntity<>(_newBook,HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error del Sistema", e);
+        }
+    }
+
+    @GetMapping("/book/{id}")
+    public ResponseEntity<Book> getBookById(@PathVariable("id") long id) {
+        try {
+            Optional<Book> oBook = bookRepository.findById(id);
+            if (oBook.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>(oBook.get(), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error del Sistema", e);
         }

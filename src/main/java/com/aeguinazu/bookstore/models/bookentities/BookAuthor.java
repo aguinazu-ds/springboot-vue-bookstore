@@ -1,5 +1,6 @@
 package com.aeguinazu.bookstore.models.bookentities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -20,8 +21,8 @@ public class BookAuthor {
 //    @Column(nullable = false, length = 50)
 //    private String lastName;
 
-    @OneToMany(mappedBy = "author")
-    @JsonManagedReference(value = "author_book_ref")
+    @OneToMany(mappedBy = "author", cascade=CascadeType.ALL)
+    @JsonBackReference(value = "author_book_ref")
     private List<Book> books;
 
     @Temporal(TemporalType.TIMESTAMP)

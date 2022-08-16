@@ -28,6 +28,7 @@ public class BookstoreUser {
     @Column(nullable = false, length = 12)
     private String phoneNumber;
 
+
     @OneToMany(mappedBy = "user")
     private List<UserAddress> userAddresses;
 
@@ -47,12 +48,21 @@ public class BookstoreUser {
     public BookstoreUser() {
     }
 
+
     public BookstoreUser(String email, String password, String firstName, String lastName, String phoneNumber) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+    }
+
+    public OrderDetails getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(OrderDetails orderDetails) {
+        this.orderDetails = orderDetails;
     }
 
     public ShoppingSession getShoppingSession() {
