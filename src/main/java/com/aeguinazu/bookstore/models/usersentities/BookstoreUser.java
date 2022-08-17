@@ -4,8 +4,14 @@ import com.aeguinazu.bookstore.models.orderentities.OrderDetails;
 import com.aeguinazu.bookstore.models.shoppingentities.ShoppingSession;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class BookstoreUser {
@@ -13,10 +19,21 @@ public class BookstoreUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+//    @Column(nullable = false, unique = true)
+//    @Pattern(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", message = "Email be valid")
+    @NotBlank
+    @Size(max = 50)
+//    @Email
     private String email;
 
+    @Column(nullable = false, unique = true)
+    @NotBlank
+    @Size(max = 20)
+    private String username;
+
     @Column(nullable = false)
+    @NotBlank
+    @Size(max = 120)
     private String password;
 
     @Column(nullable = false, length = 50)
@@ -28,6 +45,11 @@ public class BookstoreUser {
     @Column(nullable = false, length = 12)
     private String phoneNumber;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(	name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
     private List<UserAddress> userAddresses;
@@ -48,6 +70,20 @@ public class BookstoreUser {
     public BookstoreUser() {
     }
 
+    public BookstoreUser(String email, String username, String password, String firstName, String lastName, String phoneNumber) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public BookstoreUser(String email, String username, String password) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+    }
 
     public BookstoreUser(String email, String password, String firstName, String lastName, String phoneNumber) {
         this.email = email;
@@ -55,6 +91,22 @@ public class BookstoreUser {
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public OrderDetails getOrderDetails() {
