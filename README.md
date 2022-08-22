@@ -11,9 +11,9 @@ Crear REST API usando Java Spring Boot, para una tienda de ecommerce (Librería)
 - Implementado Spring security.
 - Login y registro de usuarios terminado.
 - Implementado JWT para la creación de tokens de autorización y refresco.
-- Usar Docker y subir a AWS. ([Live demo Openapi](http://ec2-52-67-221-154.sa-east-1.compute.amazonaws.com/swagger-ui/index.html))
+- Usar Docker y subir a AWS. Se crearon dos instancias, primero una RDS que contiene la base de datos a la que se conecta la app y una instancia EC2, en la cual, usando Docker se desplegó la aplicación de Springboot. ([Live demo Openapi](http://ec2-52-67-221-154.sa-east-1.compute.amazonaws.com/swagger-ui/index.html))
 
 
 #### Tareas pendientes:
 - Finalizar controladores realcionados a proceso de compra
-- Terminar front (Vue o React)
+- Terminar front (Vue o React) (Link repo: https://github.com/aguinazu-ds/bookstore-front-vue)
