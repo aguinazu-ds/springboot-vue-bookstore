@@ -16,4 +16,5 @@ Crear REST API usando Java Spring Boot, para una tienda de ecommerce (Librería)
 
 #### Tareas pendientes:
 - Finalizar controladores realcionados a proceso de compra
+- Implementar microservicios
 - Terminar front (Vue o React) (Link repo: https://github.com/aguinazu-ds/bookstore-front-vue)
