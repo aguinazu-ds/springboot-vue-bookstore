@@ -16,6 +16,7 @@ import com.aeguinazu.bookstore.repositories.RoleRepository;
 import com.aeguinazu.bookstore.security.jwt.JwtUtils;
 import com.aeguinazu.bookstore.security.services.RefreshTokenService;
 import com.aeguinazu.bookstore.security.services.UserDetailsImpl;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Hidden
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/v1/auth")
